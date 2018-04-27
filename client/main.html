@@ -3,12 +3,15 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <h1> </h1>
 
   {{> player}} {{> marker}}
 </body>
 
 <template name="player">
+  <audio id="audio" src="/audio/part1.mp3">
+    Votre navigateur ne supporte pas l'élément <code>audio</code>.
+  </audio>
   <button type="button" id="play_pause">Play/Pause</button>
 </template>
 
