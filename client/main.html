@@ -1,0 +1,57 @@
+<head>
+  <title>audio-mark</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> player}} {{> marker}}
+</body>
+
+<template name="player">
+  <button type="button" id="play_pause">Play/Pause</button>
+</template>
+
+<template name="marker">
+
+  <form>
+    <select name="emotions">
+      <option value="Amusement">
+        Amusement
+      </option>
+      <option value="Joie">
+        Joie
+      </option>
+      <option value="Appréhension">
+        Appréhension
+      </option>
+    </select>
+    <select name="player">
+      <option value="Vincent">
+        Vincent
+      </option>
+      <option value="Charlène">
+        Charlène
+      </option>
+      <option value="Edwige">
+        Edwige
+      </option>
+      <option value="Laurent">
+        Laurent
+      </option>
+    </select>
+    <select name="intensity">
+      <option value="Légère">
+        Légère
+      </option>
+      <option value="Moyenne">
+        Moyenne
+      </option>
+      <option value="Forte">
+        Forte
+      </option>
+    </select>
+    <button type="button" value="start" id="start_stop_record">Marquer</button>
+  </form>
+
+</template>
