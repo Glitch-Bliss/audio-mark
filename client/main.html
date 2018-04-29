@@ -9,52 +9,104 @@
 </body>
 
 <template name="player">
-  <audio id="audio" src="/audio/part1.mp3">
-    Votre navigateur ne supporte pas l'élément <code>audio</code>.
+  <audio id="audio" src="/audio/part1.mp3" controls>
+    Votre navigateur ne supporte pas l'élément
+    <code>audio</code>.
   </audio>
-  <button type="button" id="play_pause">Play/Pause</button>
+  <div>
+    <button type="button" id="ff1" title="Avance rapide 1sec - Flèche droite">FF 1sec</button>
+    <button type="button" id="fr1" title="Retour arrière 1sec - Flèche gauche">FR 1sec</button>
+    <button type="button" id="ff60" title="Avance rapide 1min - Flèche droite">FF 1min</button>
+    <button type="button" id="fr60" title="Retour arrière 1min - Flèche droite">FR 1min</button>
+  </div>
+
+  <div>
+    <form id="markform">
+      <select name="emotion">
+        <option value="Amusement">
+          Amusement
+        </option>
+        <option value="Joie">
+          Joie
+        </option>
+        <option value="Appréhension">
+          Appréhension
+        </option>
+      </select>
+      <select name="player">
+        <option value="Vincent">
+          Vincent
+        </option>
+        <option value="Charlène">
+          Charlène
+        </option>
+        <option value="Edwige">
+          Edwige
+        </option>
+        <option value="Laurent">
+          Laurent
+        </option>
+      </select>
+      <select name="intensity">
+        <option value="Légère">
+          Légère
+        </option>
+        <option value="Moyenne">
+          Moyenne
+        </option>
+        <option value="Forte">
+          Forte
+        </option>
+      </select>
+      <button type="submit">{{markLabel}}</button>
+    </form>
+
+  </div>
+
+
+
+  <table>
+    <th>
+      Joueur
+    </th>
+    <th>
+      Emotion
+    </th>
+    <th>
+      Intensité
+    </th>
+    <th>
+      Début/Fin
+    </th>
+    <th>
+
+    </th>
+    {{#each marks}}
+    <tr>
+      <td>
+        {{player}}
+      </td>
+      <td>
+        {{emotion}}
+      </td>
+      <td>
+        {{intensity}}
+      </td>
+      <td>
+        <p>{{formattedTime start}}</p>
+        <p>{{formattedTime end}}</p>
+      </td>
+      <td>
+        <button data-id="{{_id}}" id="delete_mark" type="submit">Supprimer</button>
+      </td>
+    </tr>
+    {{/each}}
+  </table>
+
+
 </template>
 
-<template name="marker">
+<template name="marker ">
 
-  <form>
-    <select name="emotions">
-      <option value="Amusement">
-        Amusement
-      </option>
-      <option value="Joie">
-        Joie
-      </option>
-      <option value="Appréhension">
-        Appréhension
-      </option>
-    </select>
-    <select name="player">
-      <option value="Vincent">
-        Vincent
-      </option>
-      <option value="Charlène">
-        Charlène
-      </option>
-      <option value="Edwige">
-        Edwige
-      </option>
-      <option value="Laurent">
-        Laurent
-      </option>
-    </select>
-    <select name="intensity">
-      <option value="Légère">
-        Légère
-      </option>
-      <option value="Moyenne">
-        Moyenne
-      </option>
-      <option value="Forte">
-        Forte
-      </option>
-    </select>
-    <button type="button" value="start" id="start_stop_record">Marquer</button>
-  </form>
 
 </template>
