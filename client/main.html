@@ -9,61 +9,103 @@
 </body>
 
 <template name="player">
-  <audio id="audio" src="/audio/part1.mp3" controls>
-    Votre navigateur ne supporte pas l'élément
-    <code>audio</code>.
-  </audio>
-  <div>
-    <button type="button" id="ff1" title="Avance rapide 1sec - Flèche droite">FF 1sec</button>
-    <button type="button" id="fr1" title="Retour arrière 1sec - Flèche gauche">FR 1sec</button>
-    <button type="button" id="ff60" title="Avance rapide 1min - Flèche droite">FF 1min</button>
-    <button type="button" id="fr60" title="Retour arrière 1min - Flèche droite">FR 1min</button>
+  <div id="header_block">
+    <div class="container">
+      <div class="row justify-content-center audioblock">
+        <div class="col-sm-12">
+          <audio id="audio" src="/audio/part1.mp3" controls>
+            Votre navigateur ne supporte pas l'élément
+            <code>audio</code>.
+          </audio>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <button id="fr60" class="btn btn-warning" title="Retour arrière 1min - Maj + Flèche gauche">
+            <i class="fa fa-fast-backward"></i>
+          </button>
+        </div>
+        <div class="col-sm-3">
+          <button id="fr1" class="btn btn-warning" title="Retour arrière 1sec - Flèche gauche">
+            <i class="fa fa-backward"></i>
+          </button>
+        </div>
+        <div class="col-sm-3">
+          <button id="ff1" class="btn btn-warning" title="Avance rapide 1sec - Flèche droite">
+            <i class="fa fa-forward"></i>
+          </button>
+        </div>
+        <div class="col-sm-3">
+          <button id="ff60" class="btn btn-warning" title="Avance rapide 1min - Maj + Flèche droite">
+            <i class="fa fa-fast-forward"></i>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <form id="markform">
-      <select name="emotion">
-        <option value="Amusement">
-          Amusement
-        </option>
-        <option value="Joie">
-          Joie
-        </option>
-        <option value="Appréhension">
-          Appréhension
-        </option>
-      </select>
-      <select name="player">
-        <option value="Vincent">
-          Vincent
-        </option>
-        <option value="Charlène">
-          Charlène
-        </option>
-        <option value="Edwige">
-          Edwige
-        </option>
-        <option value="Laurent">
-          Laurent
-        </option>
-      </select>
-      <select name="intensity">
-        <option value="Légère">
-          Légère
-        </option>
-        <option value="Moyenne">
-          Moyenne
-        </option>
-        <option value="Forte">
-          Forte
-        </option>
-      </select>
-      <button type="submit">{{markLabel}}</button>
-    </form>
+  <div id="mark_block">
+    <div class="container">
+      <form id="markform" class="row justify-content-center">
 
+        <div class="input-group col-sm-4">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="emotionInput">Emotions</label>
+          </div>
+          <select name="emotion" id="emotionInput">
+            <option value="Amusement">
+              Amusement
+            </option>
+            <option value="Joie">
+              Joie
+            </option>
+            <option value="Appréhension">
+              Appréhension
+            </option>
+          </select>
+        </div>
+
+        <div class="input-group col-sm-4">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="playersInput">Joueurs</label>
+          </div>
+          <select name="player" id="playersInput">
+            <option value="Vincent">
+              Vincent
+            </option>
+            <option value="Charlène">
+              Charlène
+            </option>
+            <option value="Edwige">
+              Edwige
+            </option>
+            <option value="Laurent">
+              Laurent
+            </option>
+          </select>
+        </div>
+
+        <div class="input-group col-sm-4">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="intensityInput">Intensité</label>
+          </div>
+          <select name="intensity" for="intensityInput">
+            <option value="Légère">
+              Légère
+            </option>
+            <option value="Moyenne">
+              Moyenne
+            </option>
+            <option value="Forte">
+              Forte
+            </option>
+          </select>
+        </div>
+
+        <button type="submit">{{markLabel}}</button>
+      </form>
+    </div>
   </div>
-
-
 
   <table>
     <th>
