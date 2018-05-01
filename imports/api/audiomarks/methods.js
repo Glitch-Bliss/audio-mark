@@ -4,7 +4,7 @@ import { Audiomarks } from './audiomarks.js';
 
 Meteor.methods({
     'audiomark.upsert'(audiomark) {
-        
+
         return Audiomarks.upsert({ _id: audiomark.id }, {
             $set: {
                 emotion: audiomark.emotion,
@@ -12,7 +12,8 @@ Meteor.methods({
                 intensity: audiomark.intensity,
                 start: audiomark.start,
                 end: audiomark.end,
-                isCharacter: audiomark.isCharacter,                                                
+                isPlayer: audiomark.isPlayer,
+                file: audiomark.file,
                 createdAt: new Date()
             }
         });

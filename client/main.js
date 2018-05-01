@@ -2,6 +2,30 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Audiomarks } from '../imports/api/audiomarks/audiomarks.js'
 import './main.html';
+import '../imports/startup/both';
+
+import { $ } from 'meteor/jquery';
+
+// Bootstrap Theme
+import dataTablesBootstrap from 'datatables.net-bs';
+import 'datatables.net-bs/css/dataTables.bootstrap.css';
+
+// Buttons Core
+import dataTableButtons from 'datatables.net-buttons-bs';
+
+// Import whichever buttons you are using
+import columnVisibilityButton from 'datatables.net-buttons/js/buttons.colVis.js';
+import html5ExportButtons from 'datatables.net-buttons/js/buttons.html5.js';
+import flashExportButtons from 'datatables.net-buttons/js/buttons.flash.js';
+import printButton from 'datatables.net-buttons/js/buttons.print.js';
+
+// Then initialize everything you imported
+//dataTablesBootstrap(window, $);
+dataTableButtons(window, $);
+columnVisibilityButton(window, $);
+html5ExportButtons(window, $);
+flashExportButtons(window, $);
+printButton(window, $);
 
 const mixTable = (commands) => {
   if (commands.ff) {
@@ -17,19 +41,20 @@ Template.player.onCreated(function playerOnCreated() {
   Meteor.subscribe('audiomarks.all');
   this.isStart = new ReactiveVar(false);
   this.currentMark = new ReactiveVar(null);
+  this.currentFile = new ReactiveVar("/audio/part1.mp3");
 });
 
 Template.player.helpers({
-  markLabel() {
-    return Template.instance().isStart.get() ? "Fin marque" : "Début marque";
-  },
-  marks() {
-    return Audiomarks.find();
+  isRecording() {
+    return Template.instance().isStart.get() ? true : false;
   },
   formattedTime(seconds) {
     var date = new Date(null);
     date.setSeconds(seconds);
     return date.getUTCHours() + 'h ' + date.getMinutes() + 'm ' + date.getSeconds() + 's';
+  },
+  getCurrentAudioFile() {
+    return Template.instance().currentFile.get();
   }
 });
 
@@ -69,6 +94,11 @@ Template.player.events({
       }
     });
   },
+  'click .change_audio': function (e, template) {
+    const file = $(e.currentTarget).data('file');
+    template.currentFile.set(file);
+    $('#audio').attr('src', file);
+  },
   'submit #markform': function (e, template) {
     e.preventDefault();
     e.stopPropagation();
@@ -76,15 +106,15 @@ Template.player.events({
     const markform = e.currentTarget;
     let audiomark = template.currentMark.get();
 
-    if (template.isStart && audiomark) {
+    if (template.isStart.get() && audiomark) {
       audiomark.end = $('#audio').get(0).currentTime;
-      console.info(audiomark);
 
       Meteor.call('audiomark.upsert', audiomark, (error, result) => {
         if (error) {
           console.info(error);
         } else {
           template.currentMark.set(null);
+          template.isStart.set(false);
         }
       });
     } else {
@@ -93,7 +123,11 @@ Template.player.events({
       markObject.emotion = markform.emotion.value;
       markObject.intensity = markform.intensity.value;
       markObject.start = $('#audio').get(0).currentTime;
+      markObject.file = template.currentFile.get(0);
+      markObject.isPlayer = markform.isPlayer.value;
+      console.info("Markobj ", markObject);
       template.currentMark.set(markObject);
+      template.isStart.set(true);
     }
   }
 });
@@ -104,5 +138,12 @@ Template.player.onRendered(() => {
   listener.simple_combo("left", () => mixTable({ fr: 1 }));
   listener.simple_combo("shift right", () => mixTable({ ff: 60 }));
   listener.simple_combo("shift left", () => mixTable({ fr: 60 }));
-  listener.simple_combo("space", () => $('#audio').get(0).play());
+  listener.simple_combo("space", () => $('#audio').get(0).paused ? $('#audio').get(0).play() : $('#audio').get(0).pause());
+  listener.simple_combo("r", () => $("#markform").submit());
+
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 });
+
+
