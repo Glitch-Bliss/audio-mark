@@ -9,6 +9,39 @@
 </body>
 
 <template name="player">
+  {{#unless getHadPopUpped}}
+  <aside id="profile_popup" class="container-fluid">
+    <div class="row files">
+      <div class="col-sm-12">
+        <form id="form_choose_profile">
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="playersInput">Profiler</label>
+            </div>
+            <select name="profiles" id="playersInput">
+              <option value="Vincent">
+                *Vincent*
+              </option>
+              <option value="Charlène">
+                *Charlène*
+              </option>
+              <option value="Edwige">
+                *Edwige*
+              </option>
+              <option value="Laurent">
+                *Laurent*
+              </option>
+            </select>
+          </div>
+          <button class="btn btn-success" data-toggle="tooltip" data-placement="top " role="button" aria-pressed="true" title="Choisis ton camp chenapan !">
+            <i class="fa fa-user"></i> Choisis, judicieusement !
+          </button>
+        </form>
+      </div>
+    </div>
+  </aside>
+  {{/unless}}
+
   <header>
     <div class="container">
       <div class="row files">
@@ -177,9 +210,21 @@
             <i class="fa fa-stop-circle"></i>{{else}}
             <i class="fa fa-circle"></i>{{/if}}
           </button>
+          <div class="manual_group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="">Déb/Fin</span>
+              </div>
+              <input type="text" class="form-control" id="start_input" name="start_input" value="{{getStart}}" data-rawvalue="{{getStart}}">
+              <input type="text" class="form-control" id="end_input" name="end_input" value="{{getEnd}}" data-rawvalue="{{getEnd}}">
+              <button id="enrManualButton" type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Enr Manuel - SHIFT + R">
+                <i class="fa fa-circle"> Manuel</i>
+              </button>
+            </div>
+          </div>
         </form>
         <div class="marks col-sm-8">
-          {{> tabular table=TabularTables.Marques class="table table-striped table-bordered table-condensed"}}
+          {{> tabular table=TabularTables.Marques selector=selector class="table table-striped table-bordered table-condensed"}}
         </div>
       </div>
     </div>
