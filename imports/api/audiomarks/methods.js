@@ -14,6 +14,7 @@ Meteor.methods({
                 end: audiomark.end,
                 isPlayer: audiomark.isPlayer,
                 file: audiomark.file,
+                profiler: audiomark.profiler,
                 createdAt: new Date()
             }
         });

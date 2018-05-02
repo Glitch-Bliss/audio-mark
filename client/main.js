@@ -37,24 +37,45 @@ const mixTable = (commands) => {
   }
 }
 
+const dateFormatter = (seconds) => {
+  var date = new Date(null);
+  date.setSeconds(seconds);
+  return date.getUTCHours() + 'h ' + date.getMinutes() + 'm ' + date.getSeconds() + 's';
+}
+
+
 Template.player.onCreated(function playerOnCreated() {
   Meteor.subscribe('audiomarks.all');
   this.isStart = new ReactiveVar(false);
   this.currentMark = new ReactiveVar(null);
   this.currentFile = new ReactiveVar("/audio/part1.mp3");
+  this.hadPopUpped = new ReactiveVar(false);
+  this.profiler = new ReactiveVar("Laurent");
+  this.start = new ReactiveVar("");
+  this.end = new ReactiveVar("");
 });
 
 Template.player.helpers({
   isRecording() {
     return Template.instance().isStart.get() ? true : false;
   },
-  formattedTime(seconds) {
-    var date = new Date(null);
-    date.setSeconds(seconds);
-    return date.getUTCHours() + 'h ' + date.getMinutes() + 'm ' + date.getSeconds() + 's';
-  },
   getCurrentAudioFile() {
     return Template.instance().currentFile.get();
+  },
+  getHadPopUpped() {
+    return Template.instance().hadPopUpped.get();
+  },
+  getStart() {
+    return Template.instance().start.get();
+  },
+  getEnd() {
+    return Template.instance().end.get();
+  },
+  getFormatted(time) {
+    return dateFormatter(time);
+  },
+  selector() {
+    return { profiler: Template.instance().profiler.get() };
   }
 });
 
@@ -108,6 +129,7 @@ Template.player.events({
 
     if (template.isStart.get() && audiomark) {
       audiomark.end = $('#audio').get(0).currentTime;
+      template.end.set(audiomark.end);
 
       Meteor.call('audiomark.upsert', audiomark, (error, result) => {
         if (error) {
@@ -123,12 +145,43 @@ Template.player.events({
       markObject.emotion = markform.emotion.value;
       markObject.intensity = markform.intensity.value;
       markObject.start = $('#audio').get(0).currentTime;
+      template.start.set(markObject.start);
       markObject.file = template.currentFile.get(0);
       markObject.isPlayer = markform.isPlayer.value;
-      console.info("Markobj ", markObject);
+      markObject.profiler = template.profiler.get();
       template.currentMark.set(markObject);
       template.isStart.set(true);
     }
+  },
+  'click #enrManualButton': function (e, template) {
+    e.preventDefault();
+
+    let start = $("#start_input").val();
+    let end = $("#end_input").val();
+
+    let markObject = {};
+    markObject.player = markform.player.value;
+    markObject.emotion = markform.emotion.value;
+    markObject.intensity = markform.intensity.value;
+    markObject.start = start;
+    markObject.end = end;
+    markObject.file = template.currentFile.get(0);
+    markObject.isPlayer = markform.isPlayer.value;
+    markObject.profiler = template.profiler.get();    
+
+    Meteor.call('audiomark.upsert', markObject, (error, result) => {
+      if (error) {
+        console.info(error);
+      }
+    });
+
+  },
+  'submit #form_choose_profile': function (e, template) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    template.profiler.set($("#playersInput").val());
+    template.hadPopUpped.set(true);
   }
 });
 
@@ -140,6 +193,7 @@ Template.player.onRendered(() => {
   listener.simple_combo("shift left", () => mixTable({ fr: 60 }));
   listener.simple_combo("space", () => $('#audio').get(0).paused ? $('#audio').get(0).play() : $('#audio').get(0).pause());
   listener.simple_combo("r", () => $("#markform").submit());
+  listener.simple_combo("shift r", () => $("#enrManualButton").click());
 
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()

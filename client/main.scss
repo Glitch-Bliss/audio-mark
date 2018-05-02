@@ -52,6 +52,31 @@ header {
     }
 }
 
+#profile_popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 9;
+
+    select {
+        flex-grow: 1;
+    }
+    
+    #form_choose_profile {    
+        position: fixed;
+        background: #656565;
+        width: 500px;
+        height: 130px;
+        padding: 20px;
+        text-align: center;
+        left: 50%;
+        margin-left: -250px;
+        z-index: 10;
+        top: 20%;
+    }
+}
+
 section {
     #markform {
         padding: 10px;
@@ -60,6 +85,10 @@ section {
         }
         select {
             flex-grow: 1;
+        }
+
+        .manual_group {
+            margin-top: 5px;
         }
     }
     .marks {
