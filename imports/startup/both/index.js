@@ -24,7 +24,7 @@ new Tabular.Table({
         {
             title: 'In persona?',
             data: 'isPlayer', // note: access nested data like this
-            render: (cellData, renderType, currentRow) => eval(cellData) ? 'Oui' : 'Non',
+            render: (cellData, renderType, currentRow) => eval(cellData) ? 'Non' : 'Oui',
             className: 'inPColumn'
         },
         {

@@ -20,7 +20,7 @@ import flashExportButtons from 'datatables.net-buttons/js/buttons.flash.js';
 import printButton from 'datatables.net-buttons/js/buttons.print.js';
 
 // Then initialize everything you imported
-//dataTablesBootstrap(window, $);
+// dataTablesBootstrap(window, $);
 dataTableButtons(window, $);
 columnVisibilityButton(window, $);
 html5ExportButtons(window, $);
@@ -76,6 +76,9 @@ Template.player.helpers({
   },
   selector() {
     return { profiler: Template.instance().profiler.get() };
+  },
+  getProfile() {
+    return Template.instance().profiler.get();
   }
 });
 
@@ -167,7 +170,7 @@ Template.player.events({
     markObject.end = end;
     markObject.file = template.currentFile.get(0);
     markObject.isPlayer = markform.isPlayer.value;
-    markObject.profiler = template.profiler.get();    
+    markObject.profiler = template.profiler.get();
 
     Meteor.call('audiomark.upsert', markObject, (error, result) => {
       if (error) {
@@ -180,8 +183,17 @@ Template.player.events({
     e.stopPropagation();
     e.preventDefault();
 
-    template.profiler.set($("#playersInput").val());
+    template.profiler.set($("#profiles").val());    
     template.hadPopUpped.set(true);
+  },
+  'click tbody > tr': function (event) {
+    var dataTable = $(event.target).closest('table').DataTable();
+    var rowData = dataTable.row(event.currentTarget).data();
+    if (!rowData) return; // Won't be data if a placeholder row is clicked
+    // Your click handler logic here
+    if (rowData.start) {
+      $('#audio').get(0).currentTime = rowData.start;
+    }
   }
 });
 

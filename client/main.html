@@ -16,9 +16,9 @@
         <form id="form_choose_profile">
           <div class="input-group mb-1">
             <div class="input-group-prepend">
-              <label class="input-group-text" for="playersInput">Profiler</label>
+              <label class="input-group-text" for="profiles">Profiler</label>
             </div>
-            <select name="profiles" id="playersInput">
+            <select name="profiles" id="profiles">
               <option value="Vincent">
                 *Vincent*
               </option>
@@ -33,7 +33,7 @@
               </option>
             </select>
           </div>
-          <button class="btn btn-success" data-toggle="tooltip" data-placement="top " role="button" aria-pressed="true" title="Choisis ton camp chenapan !">
+          <button class="btn btn-success" role="button" aria-pressed="true" title="Choisis ton camp chenapan !">
             <i class="fa fa-user"></i> Choisis, judicieusement !
           </button>
         </form>
@@ -122,10 +122,10 @@
                   <option value="Peur">
                     Peur
                   </option>
-                  <option value="Peur">
+                  <option value="Surprise">
                     Surprise
                   </option>
-                  <option value="Peur">
+                  <option value="Mépris">
                     Mépris
                   </option>
                 </optgroup>
@@ -139,16 +139,22 @@
                   <option value="Consternation">
                     Consternation
                   </option>
-                  <option value="Consternation">
+                  <option value="Confusion">
                     Confusion
                   </option>
-                  <option value="Consternation">
+                  <option value="Embarras">
                     Embarras
                   </option>
-                  <option value="Consternation">
+                  <option value="Frustration">
+                    Frustration
+                  </option>
+                  <option value="Gène">
+                    Gène
+                  </option>
+                  <option value="Panique">
                     Panique
                   </option>
-                  <option value="Consternation">
+                  <option value="Pitié">
                     Pitié
                   </option>
                   <option value="Tendresse">
@@ -224,6 +230,9 @@
           </div>
         </form>
         <div class="marks col-sm-8">
+          <div class="alert alert-info">
+            Profiler : {{getProfile}}
+          </div>
           {{> tabular table=TabularTables.Marques selector=selector class="table table-striped table-bordered table-condensed"}}
         </div>
       </div>
